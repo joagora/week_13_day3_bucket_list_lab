@@ -13,7 +13,7 @@ BucketListView.prototype.bindEvents = function() {
 BucketListView.prototype.render = function(allItems) {
   this.container.textContent = "";
   this.createUls(allItems);
-  console.log(allItems);
+
 
 }
 
@@ -33,6 +33,19 @@ BucketListView.prototype.createUls = function(bucketListItems) {
     const completedLi = document.createElement('li');
     completedLi.textContent = item.completed;
     bucketListUl.appendChild(completedLi);
+
+    this.createDeleteButton(item._id);
+  })
+}
+
+BucketListView.prototype.createDeleteButton = function(id) {
+  const deleteButton = document.createElement('button');
+  this.container.appendChild(deleteButton);
+  deleteButton.value = id;
+  deleteButton.textContent = "Delete";
+  deleteButton.addEventListener('click', (event) => {
+    PubSub.publish('BucketListView:delete-clicked', id);
+
   })
 }
 

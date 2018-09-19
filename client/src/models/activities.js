@@ -10,6 +10,10 @@ Activities.prototype.bindEvents = function() {
   PubSub.subscribe('FormView:new-item-ready', (event) => {
     this.postBucketListItem(event.detail);
   })
+
+  PubSub.subscribe('BucketListView:delete-clicked', (event) => {
+    this.deleteBucketListItem(event.detail);
+  })
 }
 
 Activities.prototype.getData = function() {
@@ -28,4 +32,10 @@ Activities.prototype.postBucketListItem = function(bucketListItem) {
     .catch(console.error);
 }
 
+Activities.prototype.deleteBucketListItem = function(id) {
+  this.request.delete(id)
+    .then((bucketListItems) => {
+      PubSub.publish('Activities:all-data-ready', bucketListItems);
+    })
+}
 module.exports = Activities;
